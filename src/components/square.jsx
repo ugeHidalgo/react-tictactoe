@@ -2,22 +2,22 @@
 
 import React from 'react';
 
-export default class Square extends React.Component {
-    static get propTypes() {
-        return {
-            value: React.PropTypes.string,
-            onClick: React.PropTypes.func
-        };
-    }
+const Square = function(props) {
 
-    render() {
-        return (
-            <button 
-                className="square" 
-                onClick={function() {this.props.onClick();}}
-            >
-                {this.props.value}
-            </button>
-        );
-    }
+    return (
+        <button 
+            className="square" 
+            onClick={props.onClick}
+        >
+            {props.value}
+        </button>
+    );
+};
+
+Square.propTypes = {
+    value : React.PropTypes.string,
+    onClick : React.PropTypes.func
 }
+
+
+export default Square;
