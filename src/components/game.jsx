@@ -12,7 +12,8 @@ export default class Game extends React.Component {
       }],
       xIsNext: true,
       stepNumber: 0,
-      winner: false
+      winner: false,
+      draw: false
     };
   }
 
@@ -28,6 +29,15 @@ export default class Game extends React.Component {
       }
     }
     return null;
+  }
+
+  allSquaresFilled(squares) {    
+    for (let i = 0; i<squares.length; i++){
+      if (!squares[i]) {
+        return false;
+      }
+    }
+    return true;
   }
 
   handleClick(i) {
@@ -51,18 +61,24 @@ export default class Game extends React.Component {
     if (this.calculateWinner(squares)) {
       this.setState({winner: true});      
     }
+
+    if (this.allSquaresFilled(squares)) {
+      this.setState({draw: true});
+    }
   }
 
   jumpTo(index) {
+    let history, current, squares;
+
     this.setState({
       stepNumber: index,
       xIsNext: (index % 2) === 0,
       winner: false     
     });
 
-    const history = this.state.history.slice(0,index+1),
-          current = history[index],
-          squares = current.squares.slice();
+    history = this.state.history.slice(0,index+1);
+    current = history[index];
+    squares = current.squares.slice();
     
     if (this.calculateWinner(squares)) {
       this.setState({winner: true});      
@@ -72,6 +88,7 @@ export default class Game extends React.Component {
   render() {
     const history = this.state.history,
           winner = this.state.winner,
+          draw = this.state.draw,
           current = history[this.state.stepNumber],
           moves = history.map((value,index) => {
             const buttonTitle = index ?
@@ -89,7 +106,12 @@ export default class Game extends React.Component {
     if (winner) {                        
       status = 'Winner: ' + winner;
     } else {
-      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+      if (draw) {
+        status = 'This is a draw!';
+      }
+      else {
+        status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+      }
     }
     return (
       <div className="game">
