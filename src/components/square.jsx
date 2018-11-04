@@ -2,8 +2,7 @@
 
 import React from 'react';
 
-const Square = function(props) {
-
+const Square = (props) => {
     return (
         <button 
             className="square" 
@@ -17,7 +16,7 @@ const Square = function(props) {
 Square.propTypes = {
     value : React.PropTypes.string,
     onClick : React.PropTypes.func
-}
+};
 
 
 export default Square;
